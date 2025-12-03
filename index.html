@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Flood Support Analytics Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: auto;
+      background: #0b1120;
+      color: #e5e7eb;
+    }
+    .tab-bar {
+      display: flex;
+      flex-direction: row;
+      background: #020617;
+      border-bottom: 1px solid #1f2937;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+    .tab-bar button {
+      flex: 0 0 auto;
+      border: none;
+      outline: none;
+      padding: 10px 16px;
+      cursor: pointer;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 13px;
+    }
+    .tab-bar button:hover {
+      background: #111827;
+    }
+    .tab-bar button.active {
+      background: #2563eb;
+      font-weight: bold;
+      color: #f9fafb;
+    }
+    .tab-content {
+      display: none;
+      width: 100vw;
+      box-sizing: border-box;
+      padding-bottom: 40px; /* space above footer */
+    }
+    .plot-frame {
+      width: 100%;
+      height: calc(100vh - 110px); /* big graph area (tab bar + footer approx 110px) */
+    }
+    .plot-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .plot-description {
+      padding: 16px 18px 24px 18px;
+      background: #020617;
+      border-top: 1px solid #1f2937;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .plot-description h2 {
+      margin: 0 0 6px 0;
+      font-size: 16px;
+      color: #e5e7eb;
+    }
+    .plot-description h3 {
+      margin: 8px 0 4px 0;
+      font-size: 13px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .plot-description ul {
+      margin: 4px 0 0 18px;
+      padding: 0;
+    }
+    .plot-description li {
+      margin-bottom: 3px;
+    }
+    .footer {
+      height: 30px;
+      background: #020617;
+      border-top: 1px solid #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .footer a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    .about-wrapper {
+      padding: 16px 18px 40px 18px;
+      max-width: 900px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+    .about-wrapper h1 {
+      font-size: 20px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      color: #e5e7eb;
+    }
+    .about-wrapper h2 {
+      font-size: 16px;
+      margin-top: 16px;
+      margin-bottom: 4px;
+      color: #e5e7eb;
+    }
+    .about-wrapper p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #d1d5db;
+      margin: 4px 0 8px 0;
+    }
+    .about-wrapper ul {
+      margin: 4px 0 8px 18px;
+      padding: 0;
+      font-size: 13px;
+    }
+    .about-wrapper li {
+      margin-bottom: 3px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #1f2937;
+      font-size: 11px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-content {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 20px 22px 18px 22px;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.65);
+    }
+    .modal-title {
+      font-size: 18px;
+      margin: 0 0 6px 0;
+      color: #e5e7eb;
+    }
+    .modal-subtitle {
+      font-size: 13px;
+      margin: 0 0 10px 0;
+      color: #9ca3af;
+    }
+    .modal-body {
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .modal-body p {
+      margin: 4px 0;
+    }
+    .modal-meta {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+    .modal-meta strong {
+      color: #e5e7eb;
+    }
+    .modal-button-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .modal-button {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      background: #2563eb;
+      color: #f9fafb;
+    }
+    .modal-button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Intro Modal -->
+<div id="introModal" class="modal-overlay">
+  <div class="modal-content">
+    <h1 class="modal-title">Flood Support Analytics Dashboard</h1>
+    <p class="modal-subtitle">Understanding flood relief needs across Sri Lanka using data and visual analytics.</p>
+    <div class="modal-body">
+      <p>
+        This project analyses real support requests made during a recent flood situation in Sri Lanka, focusing on
+        where people requested help, what kind of assistance they needed, and how severe their situations were.
+      </p>
+      <p>
+        The dashboard brings together data cleaning, geospatial mapping, clustering, and interactive visualisations
+        to support better humanitarian planning and decision-making.
+      </p>
+      <div class="modal-meta">
+        <p><strong>Developed &amp; Analysed by:</strong> Chanupa Athsara</p>
+        <p><strong>Role:</strong> Data Science Undergraduate &amp; Developer of this project</p>
+        <p><strong>Contact:</strong> <a href="mailto:athsara141@gmail.com" style="color:#93c5fd;text-decoration:none;">athsara141@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="modal-button-row">
+      <button class="modal-button" onclick="closeIntroModal()">Enter Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-link active" onclick="openTab(event, 'plot1')">Requests by District</button>
+  <button class="tab-link" onclick="openTab(event, 'plot2')">District × Urgency</button>
+  <button class="tab-link" onclick="openTab(event, 'plot3')">Assistance Totals</button>
+  <button class="tab-link" onclick="openTab(event, 'plot4')">Needs by District</button>
+  <button class="tab-link" onclick="openTab(event, 'plot5')">Urgency vs Needs</button>
+  <button class="tab-link" onclick="openTab(event, 'plot6')">Geo Scatter Map</button>
+  <button class="tab-link" onclick="openTab(event, 'plot7')">Density Heatmap</button>
+  <button class="tab-link" onclick="openTab(event, 'plot8')">District Needs Heatmap</button>
+  <button class="tab-link" onclick="openTab(event, 'plot9')">KMeans Clusters</button>
+  <button class="tab-link" onclick="openTab(event, 'about')">About</button>
+</div>
+
+<!-- PLOT 1 -->
+<div id="plot1" class="tab-content" style="display:block;">
+  <div class="plot-frame">
+    <iframe src="Total_Support_Requests_by_District.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>Requests by District</h2>
+    <h3>What this shows</h3>
+    <p>A bar chart of the total number of support requests received from each district.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Identifies which districts reported the highest number of help requests.</li>
+      <li>Highlights where overall demand for relief was strongest.</li>
+      <li>Helps prioritise district-level resource allocation and planning.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 2 -->
+<div id="plot2" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="Support_Requests_by_District_and_Urgency_Level.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>District × Urgency</h2>
+    <h3>What this shows</h3>
+    <p>A stacked bar chart showing how many low, medium, high, and emergency requests came from each district.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Separates “busy” districts from those with more life-threatening cases.</li>
+      <li>Reveals where emergency and high-urgency situations were concentrated.</li>
+      <li>Supports decisions on where rescue teams and medical units should be prioritised.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 3 -->
+<div id="plot3" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="Total_Assistance_Types_Requested.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>Assistance Totals</h2>
+    <h3>What this shows</h3>
+    <p>A bar chart of how many times each assistance type (food, water, medicine, boats, etc.) was requested.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Shows which types of support were most in demand during the flood.</li>
+      <li>Helps design standard relief packages and stockpiling strategies.</li>
+      <li>Highlights hidden needs like hygiene products or baby items.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 4 -->
+<div id="plot4" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="Top_Assistance_Needs_by_District.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>Needs by District</h2>
+    <h3>What this shows</h3>
+    <p>A grouped bar view of the most common assistance types requested in each district.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Reveals how needs are different from district to district.</li>
+      <li>Shows which districts needed more medical help, which needed more food/water, and which needed rescue.</li>
+      <li>Supports customised, district-specific response planning.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 5 -->
+<div id="plot5" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="Urgency_Level_vs_Assistance_Types_Heatmap.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>Urgency vs Needs</h2>
+    <h3>What this shows</h3>
+    <p>A heatmap of urgency levels (low/medium/high/emergency) against assistance types.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Highlights which needs are most associated with emergency situations (e.g. rescue, boats, evacuation).</li>
+      <li>Shows which needs appear more in medium or low urgency (e.g. cleaning, clothing, repairs).</li>
+      <li>Helps design emergency vs recovery response bundles.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 6 -->
+<div id="plot6" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="Geographical_Distribution_of_Flood_Support_Requests.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>Geo Scatter Map</h2>
+    <h3>What this shows</h3>
+    <p>A geographic scatter plot of individual requests, using latitude and longitude and coloured by urgency.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Makes visible the spatial distribution of people requesting help.</li>
+      <li>Identifies localised hotspots of distress within and across districts.</li>
+      <li>Supports planning of rescue routes, shelters, and medical deployments.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 7 -->
+<div id="plot7" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="flood_requests_heatmap_SL.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>Density Heatmap</h2>
+    <h3>What this shows</h3>
+    <p>A heatmap layer over the map, where brighter areas indicate higher (and more urgent) concentrations of requests.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Turns individual points into clear “pressure zones”.</li>
+      <li>Helps find the most intense clusters of need for focused response.</li>
+      <li>Useful for long-term planning of flood defences and shelters in repeat hotspot areas.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 8 -->
+<div id="plot8" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="District_vs_Assistance_Types_Needs_Heatmap.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>District Needs Heatmap</h2>
+    <h3>What this shows</h3>
+    <p>A heatmap of districts versus assistance types, showing how often each type of help was requested in each district.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Provides a “needs fingerprint” for every district.</li>
+      <li>Shows which districts are more medical-heavy, food-heavy, or rescue-heavy.</li>
+      <li>Supports long-term district-wise disaster preparedness and stock strategies.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PLOT 9 -->
+<div id="plot9" class="tab-content">
+  <div class="plot-frame">
+    <iframe src="KMeans_Clustering_of_Help_Request_Profiles.html"></iframe>
+  </div>
+  <div class="plot-description">
+    <h2>KMeans Clusters</h2>
+    <h3>What this shows</h3>
+    <p>A clustering view where similar requests are grouped based on needs, urgency, and location.</p>
+    <h3>Key insights</h3>
+    <ul>
+      <li>Reveals typical “types” of cases (e.g. rescue clusters, medical clusters, basic-needs clusters).</li>
+      <li>Helps design task-specific response teams for each type of situation.</li>
+      <li>Can support future automated triage by matching new cases to existing clusters.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ABOUT TAB -->
+<div id="about" class="tab-content">
+  <div class="about-wrapper">
+    <h1>Flood Support Analytics Dashboard</h1>
+    <p>
+      This dashboard visualises and analyses requests for support made during a recent flood situation in Sri Lanka.
+      Each point and bar in these graphs represents real households or locations asking for help from communities,
+      government agencies, and supporting organisations.
+    </p>
+
+    <h2>About the Analyst</h2>
+    <p>
+      <strong>Developed and Analysed by:</strong> Chanupa Athsara<br/>
+      <strong>Email:</strong> <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
+    </p>
+    <p>
+      This project combines data cleaning, geospatial processing, and visual analytics to understand where needs arose,
+      what types of help were requested, and how severe the situations were across districts.
+    </p>
+
+    <h2>Data & Methods</h2>
+    <p>
+      <span class="tag">Python</span>
+      <span class="tag">Pandas</span>
+      <span class="tag">Plotly</span>
+      <span class="tag">Folium</span>
+      <span class="tag">Scikit-learn</span>
+    </p>
+    <ul>
+      <li>Cleaned raw records, standardised city names, and mapped them to districts in Sri Lanka.</li>
+      <li>Converted assistance types into one-hot encoded columns (0/1) for analysis of needs.</li>
+      <li>Analysed urgency levels (low, medium, high, emergency) to understand severity.</li>
+      <li>Used latitude and longitude for geospatial mapping and hotspot detection.</li>
+      <li>Applied clustering and basic modelling to explore patterns in needs and urgency.</li>
+    </ul>
+
+    <h2>How to Read This Dashboard</h2>
+    <p>
+      Use the tabs above to switch between different analytical views:
+    </p>
+    <ul>
+      <li><strong>Requests by District:</strong> Overall volume of requests per district.</li>
+      <li><strong>District × Urgency:</strong> How severe the situation was in each district.</li>
+      <li><strong>Assistance Totals:</strong> What people needed the most overall (food, water, medicine, etc.).</li>
+      <li><strong>Needs by District:</strong> Which types of help were requested in each district.</li>
+      <li><strong>Urgency vs Needs:</strong> Which needs are associated with emergency vs lower urgency.</li>
+      <li><strong>Geo Scatter & Density Heatmap:</strong> Where people were located geographically.</li>
+      <li><strong>District Needs Heatmap:</strong> A “fingerprint” of needs for each district.</li>
+      <li><strong>KMeans Clusters:</strong> Groups of similar requests based on needs, urgency, and location.</li>
+    </ul>
+
+    <h2>Usage & Licence</h2>
+    <p>
+      This dashboard is intended for learning, humanitarian analysis, and planning discussions. It should not be used
+      to identify individuals or share sensitive personal information. Any real deployments should follow proper data
+      protection, privacy, and ethical guidelines.
+    </p>
+  </div>
+</div>
+
+<div class="footer">
+  Developed and Analysed by <strong>&nbsp;Chanupa Athsara</strong> &nbsp;–&nbsp; 
+  <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
+</div>
+
+<script>
+function openTab(evt, tabId) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tab-link");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].classList.remove("active");
+  }
+  document.getElementById(tabId).style.display = "block";
+  evt.currentTarget.classList.add("active");
+}
+
+function closeIntroModal() {
+  var modal = document.getElementById('introModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// Show modal on first load
+window.onload = function() {
+  var modal = document.getElementById('introModal');
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+};
+</script>
+
+</body>
+</html>
