@@ -1,18 +1,22 @@
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Flood Support Analytics Dashboard</title>
+  <!-- IMPORTANT for mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    html, body {
       margin: 0;
       padding: 0;
-      overflow: auto;
       background: #0b1120;
       color: #e5e7eb;
+      font-family: Arial, sans-serif;
     }
+    body {
+      overflow-x: hidden;
+    }
+
     .tab-bar {
       display: flex;
       flex-direction: row;
@@ -20,6 +24,7 @@
       border-bottom: 1px solid #1f2937;
       white-space: nowrap;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     .tab-bar button {
       flex: 0 0 auto;
@@ -39,9 +44,10 @@
       font-weight: bold;
       color: #f9fafb;
     }
+
     .tab-content {
       display: none;
-      width: 100vw;
+      width: 100%;
       box-sizing: border-box;
       padding-bottom: 40px; /* space above footer */
     }
@@ -54,6 +60,7 @@
       height: 100%;
       border: none;
     }
+
     .plot-description {
       padding: 16px 18px 24px 18px;
       background: #020617;
@@ -80,8 +87,9 @@
     .plot-description li {
       margin-bottom: 3px;
     }
+
     .footer {
-      height: 30px;
+      min-height: 30px;
       background: #020617;
       border-top: 1px solid #1f2937;
       display: flex;
@@ -89,6 +97,9 @@
       justify-content: center;
       font-size: 11px;
       color: #9ca3af;
+      text-align: center;
+      padding: 4px 8px;
+      box-sizing: border-box;
     }
     .footer a {
       color: #93c5fd;
@@ -97,6 +108,7 @@
     .footer a:hover {
       text-decoration: underline;
     }
+
     .about-wrapper {
       padding: 16px 18px 40px 18px;
       max-width: 900px;
@@ -139,6 +151,35 @@
       margin-bottom: 4px;
     }
 
+    /* Social buttons */
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 4px 0;
+    }
+    .social-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      font-size: 12px;
+      color: #e5e7eb;
+      text-decoration: none;
+    }
+    .social-button img {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    .social-button:hover {
+      background: #1f2937;
+      border-color: #374151;
+    }
+
     /* Modal Styles */
     .modal-overlay {
       position: fixed;
@@ -162,17 +203,20 @@
       font-size: 18px;
       margin: 0 0 6px 0;
       color: #e5e7eb;
+      text-align: center;
     }
     .modal-subtitle {
       font-size: 13px;
       margin: 0 0 10px 0;
       color: #9ca3af;
+      text-align: center;
     }
     .modal-body {
       font-size: 13px;
       color: #d1d5db;
       line-height: 1.6;
       margin-bottom: 10px;
+      text-align: justify;
     }
     .modal-body p {
       margin: 4px 0;
@@ -203,31 +247,152 @@
     .modal-button:hover {
       background: #1d4ed8;
     }
+
+    #introModal {
+    display: flex;
+    justify-content: center;   
+    align-items: center;       
+    text-align: center;        
+    }
+
+    .footer {
+      font-size: 0.95rem;          
+      font-weight: 400;           
+      text-align: center;         
+      padding: 15px 0;            
+      color: #e5e7eb;            
+    }
+
+    .footer a {
+      color: #60a5fa;             
+      text-decoration: none;      
+      font-weight: 500;           
+    }
+
+    .footer a:hover {
+      color: #93c5fd;            
+      text-decoration: underline;
+    }
+
+    .footer strong {
+      font-size: 0.85rem;         
+      color: #ffffff;           
+    }
+
+
+
+    /* MOBILE RESPONSIVE STYLES */
+    @media (max-width: 768px) {
+      body {
+        font-size: 15px;
+      }
+
+      .tab-bar {
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* show only ~2–3 tabs per view, scroll for rest */
+      .tab-bar button {
+        flex: 0 0 50%;     /* 2 per row-width */
+        padding: 12px 8px;
+        font-size: 15px;
+      }
+
+      .plot-frame {
+        height: 70vh;      /* nicer height on mobile */
+      }
+
+      .plot-description {
+        padding: 18px 16px 26px 16px;
+        font-size: 14px;
+      }
+      .plot-description h2 {
+        font-size: 18px;
+      }
+      .plot-description h3 {
+        font-size: 14px;
+      }
+
+      .about-wrapper {
+        padding: 18px 16px 50px 16px;
+      }
+      .about-wrapper h1 {
+        font-size: 22px;
+      }
+      .about-wrapper h2 {
+        font-size: 18px;
+      }
+      .about-wrapper p,
+      .about-wrapper ul {
+        font-size: 14px;
+      }
+      .about-wrapper li {
+        margin-bottom: 4px;
+      }
+
+      .tag {
+        font-size: 12px;
+        padding: 3px 8px;
+      }
+
+      .footer {
+        font-size: 12px;
+      }
+
+      .modal-content {
+        width: 92%;
+        padding: 22px 18px 18px 18px;
+      }
+      .modal-title {
+        font-size: 20px;
+      }
+      .modal-subtitle {
+        font-size: 14px;
+      }
+      .modal-body {
+        font-size: 14px;
+      }
+      .modal-meta {
+        font-size: 13px;
+      }
+      .modal-button {
+        font-size: 14px;
+        padding: 9px 18px;
+      }
+
+      .social-button {
+        font-size: 13px;
+        padding: 7px 12px;
+      }
+    }
   </style>
 </head>
 <body>
 
 <!-- Intro Modal -->
 <div id="introModal" class="modal-overlay">
-  <div class="modal-content">
-    <h1 class="modal-title">Flood Support Analytics Dashboard</h1>
+  <div class="modal-content" >
+    <h1 class="modal-title" style="margin-bottom: 25px;">Flood Support Analytics Dashboard</h1>
     <p class="modal-subtitle">Understanding flood relief needs across Sri Lanka using data and visual analytics.</p>
-    <div class="modal-body">
-      <p>
+    <div class="modal-body" style="justify-items: center;">
+      <p style="text-align: center;">
         This project analyses real support requests made during a recent flood situation in Sri Lanka, focusing on
         where people requested help, what kind of assistance they needed, and how severe their situations were.
       </p>
-      <p>
+      <p style="text-align: center;">
         The dashboard brings together data cleaning, geospatial mapping, clustering, and interactive visualisations
         to support better humanitarian planning and decision-making.
       </p>
-      <div class="modal-meta">
-        <p><strong>Developed &amp; Analysed by:</strong> Chanupa Athsara</p>
-        <p><strong>Role:</strong> Data Science Undergraduate &amp; Developer of this project</p>
+      <p style="margin-top: 8px; font-style: italic; color: #9ca3af; text-align: center;">
+        For the best experience, please use a laptop or desktop screen, as this dashboard contains detailed analytical charts and maps.
+      </p>
+      <div class="modal-meta" style="text-align: center; margin: 25px;">
+        <p ><strong>Developed &amp; Analysed by:</strong> Chanupa Athsara</p>
+        <p style="  margin: 0 !important;"><strong>Role:</strong> Data Science Undergraduate &amp; Developer of this project</p>
         <p><strong>Contact:</strong> <a href="mailto:athsara141@gmail.com" style="color:#93c5fd;text-decoration:none;">athsara141@gmail.com</a></p>
       </div>
     </div>
-    <div class="modal-button-row">
+    <div class="modal-button-row" style="justify-content: center;">
       <button class="modal-button" onclick="closeIntroModal()">Enter Dashboard</button>
     </div>
   </div>
@@ -417,12 +582,31 @@
       Each point and bar in these graphs represents real households or locations asking for help from communities,
       government agencies, and supporting organisations.
     </p>
+    <p style="font-style: italic; color: #9ca3af;">
+      For the best viewing experience and clearer interaction with the analytical charts, please use this dashboard on a laptop or desktop screen.
+    </p>
 
-    <h2>About the Analyst</h2>
+    <h2>About me</h2>
     <p>
       <strong>Developed and Analysed by:</strong> Chanupa Athsara<br/>
       <strong>Email:</strong> <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
     </p>
+
+    <div class="social-links">
+      <a class="social-button" href="https://linkedin.com/in/chanupa-athsara-4a78a8236?originalSubdomain=lk" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn">
+        <span>LinkedIn</span>
+      </a>
+      <a class="social-button" href="https://github.com/chanupa2002" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
+        <span>GitHub</span>
+      </a>
+      <a class="social-button" href="https://chanupa.tech" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlechrome.svg" alt="Portfolio">
+        <span>Portfolio Website</span>
+      </a>
+    </div>
+
     <p>
       This project combines data cleaning, geospatial processing, and visual analytics to understand where needs arose,
       what types of help were requested, and how severe the situations were across districts.
@@ -465,12 +649,36 @@
       to identify individuals or share sensitive personal information. Any real deployments should follow proper data
       protection, privacy, and ethical guidelines.
     </p>
+
+    <p style="margin-top: 8px;">
+      You can explore more of my work and get in touch through:
+    </p>
+    <div class="social-links">
+      <a class="social-button" href="https://linkedin.com/in/chanupa-athsara-4a78a8236?originalSubdomain=lk" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn">
+        <span>LinkedIn</span>
+      </a>
+      <a class="social-button" href="https://github.com/chanupa2002" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
+        <span>GitHub</span>
+      </a>
+      <a class="social-button" href="https://chanupa.tech" target="_blank" rel="noopener noreferrer">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlechrome.svg" alt="Portfolio">
+        <span>chanupa.tech</span>
+      </a>
+    </div>
   </div>
 </div>
 
 <div class="footer">
-  Developed and Analysed by <strong>&nbsp;Chanupa Athsara</strong> &nbsp;–&nbsp; 
+  Developed and Analysed by <strong>&nbsp;Chanupa Athsara</strong> &nbsp;–&nbsp;
   <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
+  &nbsp;|&nbsp;
+  <a href="https://linkedin.com/in/chanupa-athsara-4a78a8236?originalSubdomain=lk" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  &nbsp;|&nbsp;
+  <a href="https://github.com/chanupa2002" target="_blank" rel="noopener noreferrer">GitHub</a>
+  &nbsp;|&nbsp;
+  <a href="https://chanupa.tech" target="_blank" rel="noopener noreferrer">chanupa.tech</a>
 </div>
 
 <script>
