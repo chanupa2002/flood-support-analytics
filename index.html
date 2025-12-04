@@ -440,6 +440,89 @@
       }
     }
 
+    /* === ResQ Hub CTA bar (centered & shorter) === */
+    .resq-cta-wrapper {
+      padding: 16px 18px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;   /* center the box */
+    }
+
+    .resq-cta {
+      display: block;
+      text-decoration: none;
+      background: linear-gradient(90deg, #1d4ed8, #2563eb, #4f46e5);
+      border-radius: 14px;
+      padding: 14px 20px;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: #f9fafb;
+
+      /* size controls */
+      max-width: 880px;          /* <- shorter box length */
+      width: 100%;
+    }
+
+    .resq-cta-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .resq-cta-text-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .resq-cta-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .resq-cta-subtitle {
+      font-size: 13px;
+      color: #e5e7eb;
+      line-height: 1.5;
+    }
+
+    .resq-cta-arrow {
+      font-size: 18px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* Hover */
+    .resq-cta:hover {
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.75);
+      border-color: #e5e7eb;
+    }
+
+    /* Mobile: full width but still centered within padding */
+    @media (max-width: 768px) {
+      .resq-cta-wrapper {
+        padding: 16px;
+      }
+
+      .resq-cta-inner {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .resq-cta-title {
+        font-size: 16px;
+      }
+
+      .resq-cta-subtitle {
+        font-size: 14px;
+      }
+
+      .resq-cta-arrow {
+        font-size: 20px;
+      }
+    }
+
     @media (max-width: 480px) {
       .plot-frame {
         height: 60vh;
@@ -510,6 +593,24 @@
       <li>Highlights where overall demand for relief was strongest.</li>
       <li>Helps prioritise district-level resource allocation and planning.</li>
     </ul>
+    <div class="resq-cta-wrapper">
+      <a
+        href="https://resq-five.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="resq-cta"
+      >
+        <div class="resq-cta-inner">
+          <div class="resq-cta-text-block">
+            <div class="resq-cta-title">Open ResQ Hub</div>
+            <div class="resq-cta-subtitle">
+              Production-ready emergency response system with real-time flood monitoring, relief coordination, and volunteer management for Sri Lanka.
+            </div>
+          </div>
+          <div class="resq-cta-arrow">→</div>
+        </div>
+      </a>
+    </div>
   </div>
 </div>
 
