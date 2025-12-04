@@ -51,14 +51,20 @@
       box-sizing: border-box;
       padding-bottom: 40px; /* space above footer */
     }
+
+    /* Plot area – now horizontally scrollable if content is wider */
     .plot-frame {
       width: 100%;
       height: calc(100vh - 110px); /* big graph area (tab bar + footer approx 110px) */
+      overflow-x: auto;            /* HORIZONTAL SCROLL HERE */
+      overflow-y: hidden;
     }
     .plot-frame iframe {
-      width: 100%;
+      width: 1400px;   /* wider than most screens so scroll appears when needed */
+      max-width: 1400px;
       height: 100%;
       border: none;
+      display: block;
     }
 
     .plot-description {
@@ -189,6 +195,7 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
+      padding: 10px;        /* gives breathing room on small screens */
     }
     .modal-content {
       background: #020617;
@@ -249,39 +256,44 @@
     }
 
     #introModal {
-    display: flex;
-    justify-content: center;   
-    align-items: center;       
-    text-align: center;        
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
     .footer {
-      font-size: 0.95rem;          
-      font-weight: 400;           
-      text-align: center;         
-      padding: 15px 0;            
-      color: #e5e7eb;            
+      font-size: 0.95rem;
+      font-weight: 400;
+      text-align: center;
+      padding: 15px 0;
+      color: #e5e7eb;
     }
 
     .footer a {
-      color: #60a5fa;             
-      text-decoration: none;      
-      font-weight: 500;           
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 500;
     }
 
     .footer a:hover {
-      color: #93c5fd;            
+      color: #93c5fd;
       text-decoration: underline;
     }
 
     .footer strong {
-      font-size: 0.85rem;         
-      color: #ffffff;           
+      font-size: 0.85rem;
+      color: #ffffff;
     }
 
-
-
     /* MOBILE RESPONSIVE STYLES */
+    @media (max-width: 1024px) {
+      .plot-frame iframe {
+        width: 1100px;   /* slightly smaller but still scrollable */
+        max-width: 1100px;
+      }
+    }
+
     @media (max-width: 768px) {
       body {
         font-size: 15px;
@@ -300,6 +312,10 @@
 
       .plot-frame {
         height: 70vh;      /* nicer height on mobile */
+      }
+      .plot-frame iframe {
+        width: 900px;      /* still scrollable horizontally on phones */
+        max-width: 900px;
       }
 
       .plot-description {
@@ -339,9 +355,14 @@
         font-size: 12px;
       }
 
+      .modal-overlay {
+        align-items: flex-start;   /* let content scroll vertically if tall */
+        overflow-y: auto;
+      }
       .modal-content {
         width: 92%;
         padding: 22px 18px 18px 18px;
+        margin-top: 20px;
       }
       .modal-title {
         font-size: 20px;
@@ -365,13 +386,23 @@
         padding: 7px 12px;
       }
     }
+
+    @media (max-width: 480px) {
+      .plot-frame {
+        height: 60vh;
+      }
+      .plot-frame iframe {
+        width: 800px;
+        max-width: 800px;
+      }
+    }
   </style>
 </head>
 <body>
 
 <!-- Intro Modal -->
 <div id="introModal" class="modal-overlay">
-  <div class="modal-content" >
+  <div class="modal-content">
     <h1 class="modal-title" style="margin-bottom: 25px;">Flood Support Analytics Dashboard</h1>
     <p class="modal-subtitle">Understanding flood relief needs across Sri Lanka using data and visual analytics.</p>
     <div class="modal-body" style="justify-items: center;">
@@ -387,8 +418,8 @@
         For the best experience, please use a laptop or desktop screen, as this dashboard contains detailed analytical charts and maps.
       </p>
       <div class="modal-meta" style="text-align: center; margin: 25px;">
-        <p ><strong>Developed &amp; Analysed by:</strong> Chanupa Athsara</p>
-        <p style="  margin: 0 !important;"><strong>Role:</strong> Data Science Undergraduate &amp; Developer of this project</p>
+        <p><strong>Developed &amp; Analysed by:</strong> Chanupa Athsara</p>
+        <p style="margin: 0 !important;"><strong>Role:</strong> Data Science Undergraduate &amp; Developer of this project</p>
         <p><strong>Contact:</strong> <a href="mailto:athsara141@gmail.com" style="color:#93c5fd;text-decoration:none;">athsara141@gmail.com</a></p>
       </div>
     </div>
