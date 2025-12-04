@@ -94,25 +94,61 @@
       margin-bottom: 3px;
     }
 
+    /* FOOTER (3 rows) */
     .footer {
-      min-height: 30px;
+      width: 100%;
       background: #020617;
       border-top: 1px solid #1f2937;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: #9ca3af;
-      text-align: center;
-      padding: 4px 8px;
       box-sizing: border-box;
+      padding: 10px 16px;
     }
-    .footer a {
-      color: #93c5fd;
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .footer-line1 {
+      font-size: 0.85rem;
+      color: #e5e7eb;
+    }
+    .footer-line1 strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .footer-line2 {
+      font-size: 0.8rem;
+    }
+    .footer-line2 a {
+      color: #60a5fa;
       text-decoration: none;
+      font-weight: 500;
     }
-    .footer a:hover {
+    .footer-line2 a:hover {
+      color: #93c5fd;
       text-decoration: underline;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+    .footer-links a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer-links a:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+    .footer-separator {
+      color: #6b7280;
     }
 
     .about-wrapper {
@@ -121,12 +157,38 @@
       margin: 0 auto;
       box-sizing: border-box;
     }
-    .about-wrapper h1 {
-      font-size: 20px;
-      margin-top: 10px;
+
+    /* About header with ResQ Hub button */
+    .about-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 8px;
+    }
+    .about-header h1 {
+      font-size: 20px;
+      margin: 10px 0 4px 0;
       color: #e5e7eb;
     }
+    .resq-btn {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: #2563eb;
+      border: 1px solid #1d4ed8;
+      color: #f9fafb;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+      white-space: nowrap;
+    }
+    .resq-btn:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
     .about-wrapper h2 {
       font-size: 16px;
       margin-top: 16px;
@@ -262,30 +324,6 @@
       text-align: center;
     }
 
-    .footer {
-      font-size: 0.95rem;
-      font-weight: 400;
-      text-align: center;
-      padding: 15px 0;
-      color: #e5e7eb;
-    }
-
-    .footer a {
-      color: #60a5fa;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .footer a:hover {
-      color: #93c5fd;
-      text-decoration: underline;
-    }
-
-    .footer strong {
-      font-size: 0.85rem;
-      color: #ffffff;
-    }
-
     /* MOBILE RESPONSIVE STYLES */
     @media (max-width: 1024px) {
       .plot-frame iframe {
@@ -332,9 +370,21 @@
       .about-wrapper {
         padding: 18px 16px 50px 16px;
       }
-      .about-wrapper h1 {
+
+      /* On mobile, show ResQ Hub button ABOVE heading */
+      .about-header {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+      .about-header h1 {
         font-size: 22px;
       }
+      .resq-btn {
+        align-self: stretch;
+        text-align: center;
+        font-size: 14px;
+      }
+
       .about-wrapper h2 {
         font-size: 18px;
       }
@@ -351,8 +401,11 @@
         padding: 3px 8px;
       }
 
-      .footer {
-        font-size: 12px;
+      .footer-inner {
+        gap: 6px;
+      }
+      .footer-links {
+        font-size: 0.8rem;
       }
 
       .modal-overlay {
@@ -607,7 +660,14 @@
 <!-- ABOUT TAB -->
 <div id="about" class="tab-content">
   <div class="about-wrapper">
-    <h1>Flood Support Analytics Dashboard</h1>
+
+    <div class="about-header">
+      <h1>Flood Support Analytics Dashboard</h1>
+      <a class="resq-btn" href="https://resq-five.vercel.app/" target="_blank" rel="noopener noreferrer">
+        ResQ Hub
+      </a>
+    </div>
+
     <p>
       This dashboard visualises and analyses requests for support made during a recent flood situation in Sri Lanka.
       Each point and bar in these graphs represents real households or locations asking for help from communities,
@@ -702,14 +762,21 @@
 </div>
 
 <div class="footer">
-  Developed and Analysed by <strong>&nbsp;Chanupa Athsara</strong> &nbsp;–&nbsp;
-  <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
-  &nbsp;|&nbsp;
-  <a href="https://linkedin.com/in/chanupa-athsara-4a78a8236?originalSubdomain=lk" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-  &nbsp;|&nbsp;
-  <a href="https://github.com/chanupa2002" target="_blank" rel="noopener noreferrer">GitHub</a>
-  &nbsp;|&nbsp;
-  <a href="https://chanupa.tech" target="_blank" rel="noopener noreferrer">chanupa.tech</a>
+  <div class="footer-inner">
+    <div class="footer-line1">
+      Developed and Analysed by <strong>Chanupa Athsara</strong>
+    </div>
+    <div class="footer-line2">
+      <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
+    </div>
+    <div class="footer-links">
+      <a href="https://linkedin.com/in/chanupa-athsara-4a78a8236?originalSubdomain=lk" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <span class="footer-separator">•</span>
+      <a href="https://github.com/chanupa2002" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span class="footer-separator">•</span>
+      <a href="https://chanupa.tech" target="_blank" rel="noopener noreferrer">chanupa.tech</a>
+    </div>
+  </div>
 </div>
 
 <script>
