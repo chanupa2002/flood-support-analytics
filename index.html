@@ -94,63 +94,6 @@
       margin-bottom: 3px;
     }
 
-    /* FOOTER (3 rows) */
-    .footer {
-      width: 100%;
-      background: #020617;
-      border-top: 1px solid #1f2937;
-      box-sizing: border-box;
-      padding: 10px 16px;
-    }
-    .footer-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .footer-line1 {
-      font-size: 0.85rem;
-      color: #e5e7eb;
-    }
-    .footer-line1 strong {
-      color: #ffffff;
-      font-weight: 600;
-    }
-    .footer-line2 {
-      font-size: 0.8rem;
-    }
-    .footer-line2 a {
-      color: #60a5fa;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .footer-line2 a:hover {
-      color: #93c5fd;
-      text-decoration: underline;
-    }
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 0.8rem;
-    }
-    .footer-links a {
-      color: #60a5fa;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .footer-links a:hover {
-      color: #93c5fd;
-      text-decoration: underline;
-    }
-    .footer-separator {
-      color: #6b7280;
-    }
-
     .about-wrapper {
       padding: 16px 18px 40px 18px;
       max-width: 900px;
@@ -401,13 +344,6 @@
         padding: 3px 8px;
       }
 
-      .footer-inner {
-        gap: 6px;
-      }
-      .footer-links {
-        font-size: 0.8rem;
-      }
-
       .modal-overlay {
         align-items: flex-start;   /* let content scroll vertically if tall */
         overflow-y: auto;
@@ -522,6 +458,214 @@
         font-size: 20px;
       }
     }
+
+    /* === FOOTER (balanced three-column layout) === */
+    .footer {
+      width: 100%;
+      background: #020617;
+      border-top: 1px solid #1f2937;
+      box-sizing: border-box;
+      padding: 14px 0 16px 0;        
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: 1400px;             
+      margin: 0 auto;
+      padding: 0 24px;              
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+
+    .footer-top {
+      display: flex;
+      align-items: stretch; 
+      justify-content: space-between;
+      gap: 0;
+    }
+
+    .footer-column {
+      flex: 1 1 0;
+      padding: 4px 16px 0 16px;
+      box-sizing: border-box;
+    }
+
+    .footer-column-left {
+      padding-left: 0;
+    }
+
+    .footer-column-center {
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-column-right {
+      padding-right: 0;
+    }
+
+    .footer-resq-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-resq-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .footer-resq-headings {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-resq-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f9fafb;
+      margin: 0 0 2px 0;
+    }
+
+    .footer-resq-subtitle {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin: 0;
+    }
+
+    .footer-resq-subtitle2 {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin: 0;
+      margin-bottom: 4px;
+    }
+
+    .footer-resq-desc {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin: 0;
+      margin-bottom: 4px;
+      margin-top: 8px;
+    }
+
+    .footer-dev {
+      text-align: center;
+      margin-top: 8px; 
+    }
+
+    .footer-dev-line1 {
+      font-size: 0.95rem;   
+      font-weight: 600;
+      color: #e5e7eb;
+      white-space: nowrap;  
+    }
+
+    .footer-dev-line1 strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .footer-dev-line2 {
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+
+    .footer-dev-line2 a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-dev-line2 a:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.8rem;
+      margin-top: 6px;
+    }
+
+    .footer-links a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+
+    .footer-separator {
+      color: #6b7280;
+    }
+
+    .footer-platform-info {
+      font-size: 0.8rem;
+      color: #d1d5db;
+      text-align: left;
+      margin-top: 8px;  
+    }
+
+    .footer-platform-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 6px;
+    }
+
+    .footer-platform-line {
+      margin: 0 0 4px 0;
+    }
+
+    .footer-platform-label {
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .footer-top {
+        flex-direction: column;
+      }
+
+      .footer-column {
+        padding: 8px 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .footer-column-right {
+        border-bottom: none;
+      }
+
+      .footer-dev {
+        margin-top: 6px;
+      }
+
+      .footer-platform-info {
+        margin-top: 6px;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+
+      .footer-dev-line1 {
+        white-space: normal; /* allow wrap only on very small screens */
+      }
+    }
+
 
     @media (max-width: 480px) {
       .plot-frame {
@@ -867,12 +1011,6 @@
         <span>chanupa.tech</span>
       </a>
     </div>
-    <div class="about-header">
-      <h1>ResQ Hub</h1>
-      <a class="resq-btn" href="https://resq-five.vercel.app/" target="_blank" rel="noopener noreferrer">
-        ResQ Hub
-      </a>
-    </div>
     <p>
     </p>
   </div>
@@ -880,21 +1018,79 @@
 
 <div class="footer">
   <div class="footer-inner">
-    <div class="footer-line1">
-      Developed and Analysed by <strong>Chanupa Athsara</strong>
-    </div>
-    <div class="footer-line2">
-      <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
-    </div>
-    <div class="footer-links">
-      <a href="https://linkedin.com/in/chanupa-athsara-4a78a8236?originalSubdomain=lk" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <span class="footer-separator">•</span>
-      <a href="https://github.com/chanupa2002" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <span class="footer-separator">•</span>
-      <a href="https://chanupa.tech" target="_blank" rel="noopener noreferrer">chanupa.tech</a>
+    <div class="footer-top">
+
+      <!-- LEFT COLUMN: ResQ Hub -->
+      <div class="footer-column footer-column-left">
+        <div class="footer-resq-row">
+          <img
+            src="https://resq-five.vercel.app/logo.png"
+            alt="ResQ Hub Logo"
+            class="footer-resq-logo"
+          />
+          <div class="footer-resq-headings">
+            <div class="footer-resq-title">ResQ Hub</div>
+            <div class="footer-resq-subtitle">National Disaster Management Platform</div>
+          </div>
+        </div>
+        <p class="footer-resq-desc">
+          Production-ready emergency response system with real-time flood monitoring,
+          relief coordination, and volunteer management for Sri Lanka.
+        </p>
+      </div>
+
+      <!-- MIDDLE COLUMN: You -->
+      <div class="footer-column footer-column-center">
+        <div class="footer-dev">
+          <br>
+          <div class="footer-dev-line1">
+            Developed and Analysed by <strong>Chanupa Athsara</strong>
+          </div>
+          <div class="footer-dev-line2">
+            <a href="mailto:athsara141@gmail.com">athsara141@gmail.com</a>
+          </div>
+          <div class="footer-links">
+            <a href="https://linkedin.com/in/chanupa-athsara-4a78a8236?originalSubdomain=lk"
+               target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <span class="footer-separator">•</span>
+            <a href="https://github.com/chanupa2002"
+               target="_blank" rel="noopener noreferrer">GitHub</a>
+            <span class="footer-separator">•</span>
+            <a href="https://chanupa.tech"
+               target="_blank" rel="noopener noreferrer">chanupa.tech</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Platform Info -->
+      <div class="footer-column footer-column-right">
+        <div class="footer-platform-info">
+          <div class="footer-platform-title">Platform Info</div>
+          <br>
+          <p class="footer-resq-subtitle2">
+            <span class="footer-resq-subtitle2">Frontend:</span> Vercel: 
+            <a href="https://resq-five.vercel.app/" target="_blank" rel="noopener noreferrer">
+              resq-five.vercel.app
+            </a>
+          </p>
+          <p class="footer-resq-subtitle2">
+            <span class="footer-resq-subtitle2">Backend:</span> Render: 
+            <a href="https://resq-backend-3efi.onrender.com/" target="_blank" rel="noopener noreferrer">
+              resq-backend-3efi.onrender.com
+            </a>
+          </p>
+          <p class="footer-resq-subtitle2">
+            <span class="footer-resq-subtitle2">Data Sources:</span>
+            DMC Flood API:  Flood Support Public Data API
+          </p>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
+
+
 
 <script>
 function openTab(evt, tabId) {
